@@ -14,33 +14,33 @@ pipeline {
             }
         }
 
-        stage('Verify Tools') {
+        stage('Install Pip') {
             steps {
                 sh '''
-                    java -version
+                    sudo apt update || true
+                    sudo apt install -y python3-pip || true
+
                     python3 --version
-                    pip3 --version
+                    python3 -m pip --version
                 '''
             }
         }
 
-        stage('Install C++ Scanner') {
+        stage('Install Black Duck C++ Tool') {
             steps {
                 sh '''
-                    pip3 install --upgrade blackduck-c-cpp
+                    python3 -m pip install --upgrade blackduck-c-cpp
                 '''
             }
         }
 
-        stage('Black Duck C/C++ Scan') {
+        stage('Black Duck Scan') {
             steps {
                 dir('data_structures-II/06-BST') {
                     sh '''
-                        PROJECT_DIR=$(pwd)
-
                         blackduck-c-cpp \
                           -bc "make" \
-                          -d "$PROJECT_DIR" \
+                          -d "$(pwd)" \
                           -proj "Nirmal-Jenkins-cpp" \
                           -vers "cpp" \
                           -bd "$BLACKDUCK_URL" \
