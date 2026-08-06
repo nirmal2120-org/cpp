@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         BLACKDUCK_URL = 'https://expressonboarding.app.blackduck.com'
-        BLACKDUCK_TOKEN = ${{ secrets.BD_TOKEN }}
+        BLACKDUCK_TOKEN = credentials('blackduck-token')
     }
 
     stages {
